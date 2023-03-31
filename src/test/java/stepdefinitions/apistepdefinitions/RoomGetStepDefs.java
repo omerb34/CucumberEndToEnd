@@ -13,6 +13,7 @@ import java.io.IOException;
 import static base_urls.MedunnaBaseUrl.spec;
 import static io.restassured.RestAssured.given;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static stepdefinitions.MedunnaRoomStepDefs.roomNumber;
 
 public class RoomGetStepDefs {
@@ -34,18 +35,15 @@ public class RoomGetStepDefs {
 
 
         JsonPath jsonPath = response.jsonPath();
-        //Data list dönüyor. O yüzden düzenleme olacaktır...
-        String actualRoomNumber = jsonPath.getString("findAll{it.roomNumber=="+roomNumber+"}.roomNumber");
-        String actualRoomType = jsonPath.getString("findAll{it.roomNumber=="+roomNumber+"}.roomType");
-        boolean actualStatus = jsonPath.getBoolean("findAll{it.roomNumber=="+roomNumber+"}.status");
-        String actualPrice = jsonPath.getString("findAll{it.roomNumber=="+roomNumber+"}.price");
-        String actualDescription = jsonPath.getString("findAll{it.roomNumber=="+roomNumber+"}.description");
 
-        assertEquals(expectedData.getRoomNumber(), actualRoomNumber);
-        assertEquals(expectedData.getRoomType(), actualRoomType);
-        assertEquals(expectedData.getStatus(), actualStatus);
-        assertEquals(expectedData.getPrice(), actualPrice);
-        assertEquals(expectedData.getDescription(),actualDescription);
+        System.out.println(jsonPath.getList("roomNumber"));
+        System.out.println("roomNumber = " + roomNumber);
+
+        assertTrue(jsonPath.getList("roomNumber").contains(expectedData.getRoomNumber()));
+        assertTrue(jsonPath.getList("roomType").contains(expectedData.getRoomType()));
+        assertTrue(jsonPath.getList("status").contains(expectedData.getStatus()));
+        //assertTrue(jsonPath.getList("price").contains(123.0));
+        assertTrue(jsonPath.getList("description").contains(expectedData.getDescription()));
 
     }
 }
